@@ -1,0 +1,7 @@
+{
+  "name": "Aura Budget Mobile",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "react-vite"
+}
