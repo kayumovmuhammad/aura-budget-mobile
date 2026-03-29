@@ -12,9 +12,11 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@capacitor/android": "8.2.0",
     "@capacitor/app": "8.0.1",
     "@capacitor/core": "8.2.0",
     "@capacitor/haptics": "8.0.1",
+    "@capacitor/ios": "^8.2.0",
     "@capacitor/keyboard": "8.0.1",
     "@capacitor/status-bar": "8.0.1",
     "@ionic/react": "^8.5.0",
@@ -25,7 +27,8 @@
     "react": "19.0.0",
     "react-dom": "19.0.0",
     "react-router": "^5.3.4",
-    "react-router-dom": "^5.3.4"
+    "react-router-dom": "^5.3.4",
+    "zustand": "^5.0.12"
   },
   "devDependencies": {
     "@capacitor/cli": "8.2.0",

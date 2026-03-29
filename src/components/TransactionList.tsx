@@ -1,0 +1,68 @@
+import React, { useState } from 'react';
+import { IonList, IonItemSliding, IonItem, IonLabel, IonIcon, IonButton } from '@ionic/react';
+import { flashOutline, cashOutline, calendarOutline, syncOutline, todayOutline } from 'ionicons/icons';
+import { Transaction } from '../states/transactionsState';
+import useTransactions from '../states/transactionsState';
+import EditTransactionModal from './EditTransactionModal';
+
+const getPaymentIcon = (paymentType: string) => {
+    switch (paymentType) {
+        case 'once': return flashOutline;
+        case 'daily': return todayOutline;
+        case 'weekly': return syncOutline;
+        case 'monthly': return calendarOutline;
+        case 'annual': return calendarOutline;
+        default: return cashOutline;
+    }
+};
+
+const TransactionList: React.FC = () => {
+    const { transactions } = useTransactions();
+    const [selectedTransaction, setSelectedTransaction] = useState<Transaction | null>(null);
+    const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+
+    const handleTxClick = (tx: Transaction) => {
+        setSelectedTransaction(tx);
+        setIsEditModalOpen(true);
+    };
+
+    return (
+        <>
+            <div style={{ display: 'flex', justifyContent: 'space-between', padding: '0 24px', alignItems: 'center' }}>
+                <h2 style={{ fontWeight: 700, fontSize: '1.1rem', color: 'var(--text-main)' }}>
+                    Transactions
+                </h2>
+                <IonButton fill="clear" color="primary" size="small">
+                    See All
+                </IonButton>
+            </div>
+
+            <IonList lines="none">
+                {transactions.map(tx => (
+                    <IonItemSliding key={tx.id}>
+                        <IonItem className="tx-item" onClick={() => handleTxClick(tx)} button detail={false}>
+                            <div className="cat-icon" slot="start" title={tx.payment_type}>
+                                <IonIcon icon={getPaymentIcon(tx.payment_type)} />
+                            </div>
+                            <IonLabel>
+                                <h3 style={{ fontWeight: 600 }}>{tx.category}</h3>
+                                <p style={{ color: 'var(--text-sub)' }}>{tx.day}</p>
+                            </IonLabel>
+                            <div slot="end" className={tx.type === 'waste' ? 'amt-expense' : 'amt-income'}>
+                                {tx.type === 'waste' ? '-' : '+'}${tx.money_amount.toFixed(2)}
+                            </div>
+                        </IonItem>
+                    </IonItemSliding>
+                ))}
+            </IonList>
+
+            <EditTransactionModal 
+                isOpen={isEditModalOpen} 
+                onClose={() => setIsEditModalOpen(false)} 
+                transaction={selectedTransaction} 
+            />
+        </>
+    );
+};
+
+export default TransactionList;
