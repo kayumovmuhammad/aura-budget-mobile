@@ -1,19 +1,16 @@
 import React, { useRef, useState } from 'react';
-import {
-    IonModal,
-} from '@ionic/react';
-import useTransactionsState, { Transaction } from '../states/transactionsState';
+import { IonModal } from '@ionic/react';
+import { Transaction } from '../data/types';
 import DescribeTransaction from './DescribeTransaction';
 import EditTransaction from './EditTransaction';
 
 interface AddTransactionModalProps {
     triggerId: string;
+    onSave: (transaction: Transaction) => void;
 }
 
-const AddTransactionModal: React.FC<AddTransactionModalProps> = ({ triggerId }) => {
+const AddTransactionModal: React.FC<AddTransactionModalProps> = ({ triggerId, onSave }) => {
     const modal = useRef<HTMLIonModalElement>(null);
-    const addTransaction = useTransactionsState(state => state.addTransaction);
-
     const [step, setStep] = useState<1 | 2>(1);
     const [transaction, setTransaction] = useState<Partial<Transaction>>({
         description: '',
@@ -23,25 +20,23 @@ const AddTransactionModal: React.FC<AddTransactionModalProps> = ({ triggerId }) 
 
     const handleDismiss = () => {
         setStep(1);
-        setTransaction({
-            description: '',
-            type: 'waste',
-            payment_type: 'once',
-        });
+        setTransaction({ description: '', type: 'waste', payment_type: 'once' });
         modal.current?.dismiss();
     };
 
     const handleSave = () => {
-        const newTransaction = {
+        const newTransaction: Transaction = {
             ...transaction,
             id: Date.now().toString(),
             money_amount: Number(transaction.money_amount) || 0,
             category: transaction.category || '',
             day: transaction.day || '',
-            start_date: transaction.payment_type === 'once' ? (transaction.day || '') : (transaction.start_date || ''),
+            start_date: transaction.payment_type === 'once'
+                ? (transaction.day as string || '')
+                : (transaction.start_date || ''),
             finish_date: transaction.finish_date || '',
-        };
-        addTransaction(newTransaction as any);
+        } as Transaction;
+        onSave(newTransaction);
         handleDismiss();
     };
 
@@ -66,13 +61,13 @@ const AddTransactionModal: React.FC<AddTransactionModalProps> = ({ triggerId }) 
                 <div style={{ width: '40px', height: '4px', background: 'var(--border-color)', borderRadius: '10px', margin: '10px auto 20px', flexShrink: 0 }}></div>
 
                 {step === 1 ? (
-                    <DescribeTransaction 
-                        description={transaction.description || ''} 
+                    <DescribeTransaction
+                        description={transaction.description || ''}
                         setDescription={(val) => handleUpdate({ description: val })}
                         onNext={() => setStep(2)}
                     />
                 ) : (
-                    <EditTransaction 
+                    <EditTransaction
                         transaction={transaction}
                         onUpdate={handleUpdate}
                         onSave={handleSave}

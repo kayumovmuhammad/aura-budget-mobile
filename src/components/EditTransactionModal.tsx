@@ -1,47 +1,46 @@
 import React, { useRef, useEffect } from 'react';
-import {
-    IonModal,
-} from '@ionic/react';
-import useTransactionsState, { Transaction } from '../states/transactionsState';
+import { IonModal } from '@ionic/react';
+import { Transaction } from '../data/types';
 import EditTransaction from './EditTransaction';
 
 interface EditTransactionModalProps {
     isOpen: boolean;
     onClose: () => void;
     transaction: Transaction | null;
+    onSave: (id: string, transaction: Transaction) => void;
+    onDelete: (id: string) => void;
 }
 
-const EditTransactionModal: React.FC<EditTransactionModalProps> = ({ isOpen, onClose, transaction }) => {
+const EditTransactionModal: React.FC<EditTransactionModalProps> = ({
+    isOpen,
+    onClose,
+    transaction,
+    onSave,
+    onDelete,
+}) => {
     const modal = useRef<HTMLIonModalElement>(null);
-    const updateTransaction = useTransactionsState(state => state.updateTransaction);
-    const deleteTransaction = useTransactionsState(state => state.deleteTransaction);
-
     const [editData, setEditData] = React.useState<Partial<Transaction>>({});
 
     useEffect(() => {
-        if (transaction) {
-            setEditData(transaction);
-        }
+        if (transaction) setEditData(transaction);
     }, [transaction]);
 
     const handleSave = () => {
         if (transaction && editData) {
-            const updatedTransaction = {
+            const updated: Transaction = {
                 ...transaction,
                 ...editData,
                 money_amount: Number(editData.money_amount) || 0,
-                start_date: editData.payment_type === 'once' ? (editData.day || '') : (editData.start_date || ''),
+                start_date: editData.payment_type === 'once'
+                    ? (editData.day as string || '')
+                    : (editData.start_date || ''),
             };
-            updateTransaction(transaction.id, updatedTransaction as Transaction);
-            onClose();
+            onSave(transaction.id, updated);
         }
     };
 
     const handleDelete = () => {
-        if (transaction) {
-            deleteTransaction(transaction.id);
-            onClose();
-        }
+        if (transaction) onDelete(transaction.id);
     };
 
     const handleUpdate = (data: Partial<Transaction>) => {
@@ -65,7 +64,7 @@ const EditTransactionModal: React.FC<EditTransactionModalProps> = ({ isOpen, onC
                 <div style={{ width: '40px', height: '4px', background: 'var(--border-color)', borderRadius: '10px', margin: '10px auto 20px', flexShrink: 0 }}></div>
 
                 {transaction && (
-                    <EditTransaction 
+                    <EditTransaction
                         transaction={editData}
                         onUpdate={handleUpdate}
                         onSave={handleSave}

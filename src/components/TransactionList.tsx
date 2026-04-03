@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import { IonList, IonItemSliding, IonItem, IonLabel, IonIcon, IonButton } from '@ionic/react';
 import { flashOutline, cashOutline, calendarOutline, syncOutline, todayOutline } from 'ionicons/icons';
-import { Transaction } from '../states/transactionsState';
-import useTransactions from '../states/transactionsState';
+import { Transaction } from '../data/types';
 import EditTransactionModal from './EditTransactionModal';
 
 const getPaymentIcon = (paymentType: string) => {
@@ -16,9 +15,13 @@ const getPaymentIcon = (paymentType: string) => {
     }
 };
 
-const TransactionList: React.FC = () => {
-    const { transactions, activeBudget } = useTransactions();
-    const currentTransactions = transactions[activeBudget] || [];
+interface TransactionListProps {
+    transactions: Transaction[];
+    onUpdate: (id: string, tx: Transaction) => void;
+    onDelete: (id: string) => void;
+}
+
+const TransactionList: React.FC<TransactionListProps> = ({ transactions, onUpdate, onDelete }) => {
     const [selectedTransaction, setSelectedTransaction] = useState<Transaction | null>(null);
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
 
@@ -39,7 +42,7 @@ const TransactionList: React.FC = () => {
             </div>
 
             <IonList lines="none">
-                {currentTransactions.map(tx => (
+                {transactions.map(tx => (
                     <IonItemSliding key={tx.id}>
                         <IonItem className="tx-item" onClick={() => handleTxClick(tx)} button detail={false}>
                             <div className="cat-icon" slot="start" title={tx.payment_type}>
@@ -57,10 +60,12 @@ const TransactionList: React.FC = () => {
                 ))}
             </IonList>
 
-            <EditTransactionModal 
-                isOpen={isEditModalOpen} 
-                onClose={() => setIsEditModalOpen(false)} 
-                transaction={selectedTransaction} 
+            <EditTransactionModal
+                isOpen={isEditModalOpen}
+                onClose={() => setIsEditModalOpen(false)}
+                transaction={selectedTransaction}
+                onSave={(id, tx) => { onUpdate(id, tx); setIsEditModalOpen(false); }}
+                onDelete={(id) => { onDelete(id); setIsEditModalOpen(false); }}
             />
         </>
     );

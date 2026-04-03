@@ -8,17 +8,31 @@ import SummaryCard from '../components/SummaryCard';
 import TransactionList from '../components/TransactionList';
 import AddTransactionModal from '../components/AddTransactionModal';
 import BudgetSelectionModal from '../components/BudgetSelectionModal';
-import useTransactionsState from '../states/transactionsState';
-import { useFinances } from '../utils/financeCalculations';
+import { Transaction } from '../data/types';
+import useTransactionsState, { useFinances } from '../states/transactionsState';
 
 const Home: React.FC = () => {
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [showBudgetModal, setShowBudgetModal] = useState(false);
-  const { activeBudget, setActiveBudget } = useTransactionsState();
+
+  // ── Store ──────────────────────────────────────────────────
+  const {
+    transactions,
+    budget,
+    activeBudget,
+    setActiveBudget,
+    addTransaction,
+    updateTransaction,
+    deleteTransaction,
+  } = useTransactionsState();
+
   const { income, waste, balance, incomeByCategory, wasteByCategory } = useFinances();
 
+  const currentTransactions = transactions[activeBudget] || [];
+  const budgetNames = budget.map(b => b.title);
+
+  // ── Theme ──────────────────────────────────────────────────
   useEffect(() => {
-    // Check initial system preference or saved preference
     const prefersDark = window.matchMedia('(prefers-color-scheme: dark)');
     if (prefersDark.matches) {
       setIsDarkMode(true);
@@ -31,11 +45,25 @@ const Home: React.FC = () => {
   }, []);
 
   const toggleTheme = () => {
-    setIsDarkMode(!isDarkMode);
+    setIsDarkMode(prev => !prev);
     document.body.classList.toggle('dark');
     document.documentElement.classList.toggle('ion-palette-dark');
   };
 
+  // ── Handlers ───────────────────────────────────────────────
+  const handleAddTransaction = (tx: Transaction) => {
+    addTransaction(tx);
+  };
+
+  const handleUpdateTransaction = (id: string, tx: Transaction) => {
+    updateTransaction(id, tx);
+  };
+
+  const handleDeleteTransaction = (id: string) => {
+    deleteTransaction(id);
+  };
+
+  // ── Render ─────────────────────────────────────────────────
   return (
     <IonPage>
       <Header
@@ -51,14 +79,18 @@ const Home: React.FC = () => {
           expenseDelta={waste}
         />
 
-        <SummaryCard 
-          income={income} 
-          waste={waste} 
+        <SummaryCard
+          income={income}
+          waste={waste}
           incomeByCategory={incomeByCategory}
           wasteByCategory={wasteByCategory}
         />
 
-        <TransactionList />
+        <TransactionList
+          transactions={currentTransactions}
+          onUpdate={handleUpdateTransaction}
+          onDelete={handleDeleteTransaction}
+        />
 
         <div style={{ height: '100px' }}></div>
       </IonContent>
@@ -69,11 +101,15 @@ const Home: React.FC = () => {
         </IonFabButton>
       </IonFab>
 
-      <AddTransactionModal triggerId="open-add-modal" />
+      <AddTransactionModal
+        triggerId="open-add-modal"
+        onSave={handleAddTransaction}
+      />
 
       <BudgetSelectionModal
         isOpen={showBudgetModal}
         onDidDismiss={() => setShowBudgetModal(false)}
+        budgets={budgetNames}
         selectedBudget={activeBudget}
         onSelectBudget={setActiveBudget}
       />

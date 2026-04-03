@@ -1,19 +1,22 @@
 import React from 'react';
 import { IonModal, IonContent, IonList, IonItem, IonLabel, IonIcon } from '@ionic/react';
 import { checkmarkCircle } from 'ionicons/icons';
-import useTransactionsState from '../states/transactionsState';
 
 interface BudgetSelectionModalProps {
     isOpen: boolean;
     onDidDismiss: () => void;
+    budgets: string[];
     selectedBudget: string;
     onSelectBudget: (budget: string) => void;
 }
 
-const BudgetSelectionModal: React.FC<BudgetSelectionModalProps> = ({ isOpen, onDidDismiss, selectedBudget, onSelectBudget }) => {
-    const budgetObjects = useTransactionsState(state => state.budget);
-    const budgets = budgetObjects.map(b => b.title);
-
+const BudgetSelectionModal: React.FC<BudgetSelectionModalProps> = ({
+    isOpen,
+    onDidDismiss,
+    budgets,
+    selectedBudget,
+    onSelectBudget,
+}) => {
     return (
         <IonModal
             id="budget-modal"
@@ -36,7 +39,9 @@ const BudgetSelectionModal: React.FC<BudgetSelectionModalProps> = ({ isOpen, onD
                                 onSelectBudget(b);
                                 onDidDismiss();
                             }}
-                            style={b === selectedBudget ? { '--background': 'var(--chip-bg)', borderRadius: '12px', marginBottom: '8px' } : { borderRadius: '12px' }}
+                            style={b === selectedBudget
+                                ? { '--background': 'var(--chip-bg)', borderRadius: '12px', marginBottom: '8px' }
+                                : { borderRadius: '12px' }}
                         >
                             <IonLabel>{b}</IonLabel>
                             {b === selectedBudget && (

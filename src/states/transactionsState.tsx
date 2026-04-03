@@ -1,17 +1,10 @@
-import { create } from "zustand";
-import { persist } from "zustand/middleware";
+import { create } from 'zustand';
+import { persist } from 'zustand/middleware';
+import { Transaction, Budget, FinancialSummary } from '../data/types';
+import { calculateTotalsInRange } from '../utils/financeCalculations';
 
-interface Transaction {
-    id: string;
-    description?: string;
-    money_amount: number;
-    type: "waste" | "income";
-    category: string;
-    payment_type: "once" | "monthly" | "annual" | "weekly" | "daily";
-    day: string | number | null;
-    start_date: string;
-    finish_date?: string;
-}
+// Re-export Transaction so existing imports from this file don't break
+export type { Transaction };
 
 interface TransactionsState {
     transactions: Record<string, Transaction[]>;
@@ -23,54 +16,90 @@ interface TransactionsState {
     updateTransaction: (id: string, transaction: Transaction) => void;
 }
 
-interface Budget {
-    id: number;
-    title: string;
-}
-
-const transactionsState = create<TransactionsState>()(
+const useTransactionsState = create<TransactionsState>()(
     persist(
         (set) => ({
             transactions: {},
             budget: [
-                { id: 0, title: "Personal" },
-                { id: 1, title: "Vacation Fund" }
+                { id: 0, title: 'Personal' },
+                { id: 1, title: 'Vacation Fund' },
             ],
-            activeBudget: "Personal",
+            activeBudget: 'Personal',
             setActiveBudget: (title) => set({ activeBudget: title }),
-            addTransaction: (transaction) => set((state) => {
-                const currentTxs = state.transactions[state.activeBudget] || [];
-                return {
-                    transactions: {
-                        ...state.transactions,
-                        [state.activeBudget]: [...currentTxs, transaction]
-                    }
-                };
-            }),
-            deleteTransaction: (id) => set((state) => {
-                const currentTxs = state.transactions[state.activeBudget] || [];
-                return {
-                    transactions: {
-                        ...state.transactions,
-                        [state.activeBudget]: currentTxs.filter((t) => t.id !== id)
-                    }
-                };
-            }),
-            updateTransaction: (id, transaction) => set((state) => {
-                const currentTxs = state.transactions[state.activeBudget] || [];
-                return {
-                    transactions: {
-                        ...state.transactions,
-                        [state.activeBudget]: currentTxs.map((t) => t.id === id ? transaction : t)
-                    }
-                };
-            }),
+            addTransaction: (transaction) =>
+                set((state) => {
+                    const currentTxs = state.transactions[state.activeBudget] || [];
+                    return {
+                        transactions: {
+                            ...state.transactions,
+                            [state.activeBudget]: [...currentTxs, transaction],
+                        },
+                    };
+                }),
+            deleteTransaction: (id) =>
+                set((state) => {
+                    const currentTxs = state.transactions[state.activeBudget] || [];
+                    return {
+                        transactions: {
+                            ...state.transactions,
+                            [state.activeBudget]: currentTxs.filter((t) => t.id !== id),
+                        },
+                    };
+                }),
+            updateTransaction: (id, transaction) =>
+                set((state) => {
+                    const currentTxs = state.transactions[state.activeBudget] || [];
+                    return {
+                        transactions: {
+                            ...state.transactions,
+                            [state.activeBudget]: currentTxs.map((t) => (t.id === id ? transaction : t)),
+                        },
+                    };
+                }),
         }),
-        {
-            name: "transactions",
-        }
+        { name: 'transactions' }
     )
 );
 
-export type { Transaction }
-export default transactionsState
+/**
+ * Reactive hook — lives here because it reads Zustand state.
+ * Derives all financial totals from the active budget's transactions.
+ */
+export const useFinances = (): FinancialSummary => {
+    const state = useTransactionsState();
+    const transactions = state.transactions[state.activeBudget] || [];
+    const now = new Date();
+
+    // Find earliest transaction start date
+    let earliestDate = now;
+    transactions.forEach((tx) => {
+        if (tx.start_date) {
+            let d: Date;
+            if (typeof tx.start_date === 'string') {
+                const parts = tx.start_date.split('T')[0].split('-');
+                if (parts.length === 3) {
+                    d = new Date(Number(parts[0]), Number(parts[1]) - 1, Number(parts[2]));
+                } else {
+                    d = new Date(tx.start_date);
+                    d.setHours(0, 0, 0, 0);
+                }
+            } else {
+                d = new Date(tx.start_date);
+                d.setHours(0, 0, 0, 0);
+            }
+            if (d < earliestDate) earliestDate = d;
+        }
+    });
+
+    const totals = calculateTotalsInRange(transactions, earliestDate, now);
+
+    return {
+        balance: totals.income - totals.waste,
+        income: totals.income,
+        waste: totals.waste,
+        incomeByCategory: totals.incomeByCategory,
+        wasteByCategory: totals.wasteByCategory,
+    };
+};
+
+export default useTransactionsState;
