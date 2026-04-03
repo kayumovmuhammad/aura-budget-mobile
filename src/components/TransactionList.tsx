@@ -17,7 +17,8 @@ const getPaymentIcon = (paymentType: string) => {
 };
 
 const TransactionList: React.FC = () => {
-    const { transactions } = useTransactions();
+    const { transactions, activeBudget } = useTransactions();
+    const currentTransactions = transactions[activeBudget] || [];
     const [selectedTransaction, setSelectedTransaction] = useState<Transaction | null>(null);
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
 
@@ -38,7 +39,7 @@ const TransactionList: React.FC = () => {
             </div>
 
             <IonList lines="none">
-                {transactions.map(tx => (
+                {currentTransactions.map(tx => (
                     <IonItemSliding key={tx.id}>
                         <IonItem className="tx-item" onClick={() => handleTxClick(tx)} button detail={false}>
                             <div className="cat-icon" slot="start" title={tx.payment_type}>

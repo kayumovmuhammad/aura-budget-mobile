@@ -14,19 +14,57 @@ interface Transaction {
 }
 
 interface TransactionsState {
-    transactions: Transaction[];
+    transactions: Record<string, Transaction[]>;
+    budget: Budget[];
+    activeBudget: string;
+    setActiveBudget: (title: string) => void;
     addTransaction: (transaction: Transaction) => void;
     deleteTransaction: (id: string) => void;
     updateTransaction: (id: string, transaction: Transaction) => void;
 }
 
+interface Budget {
+    id: number;
+    title: string;
+}
+
 const transactionsState = create<TransactionsState>()(
     persist(
         (set) => ({
-            transactions: [],
-            addTransaction: (transaction) => set((state) => ({ transactions: [...state.transactions, transaction] })),
-            deleteTransaction: (id) => set((state) => ({ transactions: state.transactions.filter((t) => t.id !== id) })),
-            updateTransaction: (id, transaction) => set((state) => ({ transactions: state.transactions.map((t) => t.id === id ? transaction : t) })),
+            transactions: {},
+            budget: [
+                { id: 0, title: "Personal" },
+                { id: 1, title: "Vacation Fund" }
+            ],
+            activeBudget: "Personal",
+            setActiveBudget: (title) => set({ activeBudget: title }),
+            addTransaction: (transaction) => set((state) => {
+                const currentTxs = state.transactions[state.activeBudget] || [];
+                return {
+                    transactions: {
+                        ...state.transactions,
+                        [state.activeBudget]: [...currentTxs, transaction]
+                    }
+                };
+            }),
+            deleteTransaction: (id) => set((state) => {
+                const currentTxs = state.transactions[state.activeBudget] || [];
+                return {
+                    transactions: {
+                        ...state.transactions,
+                        [state.activeBudget]: currentTxs.filter((t) => t.id !== id)
+                    }
+                };
+            }),
+            updateTransaction: (id, transaction) => set((state) => {
+                const currentTxs = state.transactions[state.activeBudget] || [];
+                return {
+                    transactions: {
+                        ...state.transactions,
+                        [state.activeBudget]: currentTxs.map((t) => t.id === id ? transaction : t)
+                    }
+                };
+            }),
         }),
         {
             name: "transactions",

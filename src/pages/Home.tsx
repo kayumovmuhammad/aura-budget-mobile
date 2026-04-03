@@ -8,12 +8,14 @@ import SummaryCard from '../components/SummaryCard';
 import TransactionList from '../components/TransactionList';
 import AddTransactionModal from '../components/AddTransactionModal';
 import BudgetSelectionModal from '../components/BudgetSelectionModal';
-
+import useTransactionsState from '../states/transactionsState';
+import { useFinances } from '../utils/financeCalculations';
 
 const Home: React.FC = () => {
   const [isDarkMode, setIsDarkMode] = useState(false);
-  const [selectedBudget, setSelectedBudget] = useState('Personal');
   const [showBudgetModal, setShowBudgetModal] = useState(false);
+  const { activeBudget, setActiveBudget } = useTransactionsState();
+  const { income, waste, balance, incomeByCategory, wasteByCategory } = useFinances();
 
   useEffect(() => {
     // Check initial system preference or saved preference
@@ -40,16 +42,21 @@ const Home: React.FC = () => {
         isDarkMode={isDarkMode}
         toggleTheme={toggleTheme}
         openBudgetModal={() => setShowBudgetModal(true)}
-        selectedBudget={selectedBudget}
+        selectedBudget={activeBudget}
       />
       <IonContent fullscreen>
         <BalanceStats
-          balance={4250.00}
-          incomeDelta={1200}
-          expenseDelta={850}
+          balance={balance}
+          incomeDelta={income}
+          expenseDelta={waste}
         />
 
-        <SummaryCard />
+        <SummaryCard 
+          income={income} 
+          waste={waste} 
+          incomeByCategory={incomeByCategory}
+          wasteByCategory={wasteByCategory}
+        />
 
         <TransactionList />
 
@@ -67,8 +74,8 @@ const Home: React.FC = () => {
       <BudgetSelectionModal
         isOpen={showBudgetModal}
         onDidDismiss={() => setShowBudgetModal(false)}
-        selectedBudget={selectedBudget}
-        onSelectBudget={setSelectedBudget}
+        selectedBudget={activeBudget}
+        onSelectBudget={setActiveBudget}
       />
     </IonPage>
   );

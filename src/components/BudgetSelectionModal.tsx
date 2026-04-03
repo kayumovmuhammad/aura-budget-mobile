@@ -1,6 +1,7 @@
 import React from 'react';
 import { IonModal, IonContent, IonList, IonItem, IonLabel, IonIcon } from '@ionic/react';
 import { checkmarkCircle } from 'ionicons/icons';
+import useTransactionsState from '../states/transactionsState';
 
 interface BudgetSelectionModalProps {
     isOpen: boolean;
@@ -10,7 +11,8 @@ interface BudgetSelectionModalProps {
 }
 
 const BudgetSelectionModal: React.FC<BudgetSelectionModalProps> = ({ isOpen, onDidDismiss, selectedBudget, onSelectBudget }) => {
-    const budgets = ['Personal', 'Vacation Fund'];
+    const budgetObjects = useTransactionsState(state => state.budget);
+    const budgets = budgetObjects.map(b => b.title);
 
     return (
         <IonModal

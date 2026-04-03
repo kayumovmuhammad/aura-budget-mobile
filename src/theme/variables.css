@@ -112,13 +112,9 @@ ion-segment-button.summary-segment-btn {
 
 /* Chart */
 .chart-placeholder {
-    width: 180px;
-    height: 180px;
     margin: 20px auto;
-    border-radius: 50%;
-    border: 12px solid var(--chip-bg);
-    border-top-color: var(--ion-color-primary);
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
 }
