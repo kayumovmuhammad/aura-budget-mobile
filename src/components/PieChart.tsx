@@ -18,7 +18,7 @@ const colors = [
 
 const PieChart: React.FC<PieChartProps> = ({ data }) => {
     const total = Object.values(data).reduce((acc, val) => acc + (Number(val) || 0), 0);
-    
+
     if (total === 0 || Object.keys(data).length === 0) {
         return (
             <div style={{ textAlign: 'center', opacity: 0.5, padding: '30px 0' }}>
@@ -55,7 +55,7 @@ const PieChart: React.FC<PieChartProps> = ({ data }) => {
                     background: gradient,
                     boxShadow: '0 8px 24px rgba(0,0,0,0.1)'
                 }}></div>
-                
+
                 {/* Donut Hole overlay */}
                 <div style={{
                     position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)',
@@ -69,12 +69,12 @@ const PieChart: React.FC<PieChartProps> = ({ data }) => {
                     <span style={{ fontSize: '1.1rem', fontWeight: 700, color: 'var(--text-main)' }}>${total.toFixed(0)}</span>
                 </div>
             </div>
-            
+
             {/* Minimalist Legend */}
             <div style={{ width: '100%', display: 'flex', flexDirection: 'column', gap: '14px', padding: '0 10px' }}>
                 {slices.map((slice, i) => (
-                    <div key={i} style={{ 
-                        display: 'flex', justifyContent: 'space-between', alignItems: 'center', 
+                    <div key={i} style={{
+                        display: 'flex', justifyContent: 'space-between', alignItems: 'center',
                         padding: '12px 16px', background: 'var(--chip-bg)', borderRadius: '16px',
                         border: '1px solid var(--border-color)'
                     }}>
@@ -84,8 +84,8 @@ const PieChart: React.FC<PieChartProps> = ({ data }) => {
                         </div>
                         <div style={{ display: 'flex', gap: '15px', alignItems: 'center' }}>
                             <span style={{ fontWeight: 700, color: 'var(--text-main)', fontSize: '0.95rem' }}>${slice.value.toFixed(2)}</span>
-                            <span style={{ 
-                                color: 'var(--text-sub)', 
+                            <span style={{
+                                color: 'var(--text-sub)',
                                 background: 'rgba(0,0,0,0.1)',
                                 padding: '4px 8px',
                                 borderRadius: '8px',

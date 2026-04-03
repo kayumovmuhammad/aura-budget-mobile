@@ -16,6 +16,16 @@ http://ionicframework.com/docs/theming/ */
     --text-sub: #75736d;
     --chip-bg: #f0eee9;
     --border-color: #e0ddd5;
+
+    /* Light theme chart: vivid modern palette — pops on cream/white */
+    --chart-color-1: #5b6cf5; /* Indigo */
+    --chart-color-2: #f0654a; /* Coral */
+    --chart-color-3: #00b09b; /* Teal */
+    --chart-color-4: #f5a623; /* Amber */
+    --chart-color-5: #9b59b6; /* Violet */
+    --chart-color-6: #2ecc71; /* Mint green */
+    --chart-color-7: #e91e8c; /* Hot pink */
+    --chart-color-8: #03a9f4; /* Sky blue */
 }
 
 /* DARK THEME CLASS */
@@ -37,6 +47,16 @@ html.ion-palette-dark {
     --border-color: #3d3b36;
     --ion-background-color: #1a1917;
     --ion-item-background: #262522;
+
+    /* Dark theme chart: muted & deep so they glow on dark stone backgrounds */
+    --chart-color-1: #918b76; /* Stone primary */
+    --chart-color-2: #b87a62; /* Muted rust */
+    --chart-color-3: #687a6d; /* Muted sage */
+    --chart-color-4: #c4ad7a; /* Warm sand */
+    --chart-color-5: #7f736b; /* Warm taupe */
+    --chart-color-6: #a86b6b; /* Muted rose */
+    --chart-color-7: #5c6e7a; /* Slate blue */
+    --chart-color-8: #8a825e; /* Dark mustard */
 }
 
 body {
