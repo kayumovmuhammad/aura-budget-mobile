@@ -1,8 +1,10 @@
 import React, { useRef, useState } from 'react';
-import { IonModal } from '@ionic/react';
+import { IonLabel, IonLoading, IonModal, useIonToast } from '@ionic/react';
 import { Transaction } from '../data/types';
 import DescribeTransaction from './DescribeTransaction';
 import EditTransaction from './EditTransaction';
+import fetcher from '../utils/fetcher';
+import { DotLottieReact } from '@lottiefiles/dotlottie-react';
 
 interface AddTransactionModalProps {
     triggerId: string;
@@ -17,6 +19,18 @@ const AddTransactionModal: React.FC<AddTransactionModalProps> = ({ triggerId, on
         type: 'waste',
         payment_type: 'once',
     });
+    const [presentToast] = useIonToast();
+    const [loading, setLoading] = useState<boolean>(false);
+
+    const showError = (message: string) => {
+        presentToast({
+            message,
+            swipeGesture: "vertical",
+            duration: 5000,
+            color: 'danger',
+            position: 'top'
+        });
+    };
 
     const handleDismiss = () => {
         setStep(1);
@@ -44,6 +58,37 @@ const AddTransactionModal: React.FC<AddTransactionModalProps> = ({ triggerId, on
         setTransaction(prev => ({ ...prev, ...data }));
     };
 
+    const handleNext = () => {
+        const description = transaction.description;
+
+        if (!description || description.trim() === '') {
+            showError("Please enter a description before continuing.");
+            return;
+        }
+
+        setLoading(true);
+        fetcher(`${import.meta.env.VITE_API_URL}/transaction/annotate`, {
+            method: 'POST',
+            body: JSON.stringify({ user_description: description }),
+        }).then(res => {
+            if (!res.ok) {
+                throw new Error('Failed to annotate transaction');
+            }
+            return res.json()
+        }).then(data => {
+            if (data.message != "ok") {
+                throw new Error(data.message);
+            }
+            console.log(data);
+            setTransaction(prev => ({ ...prev, ...data }));
+            setStep(2);
+        }).catch(err => {
+            showError(err instanceof Error ? err.message : String(err));
+        }).finally(() => {
+            setLoading(false);
+        });
+    }
+
     return (
         <IonModal
             id="add-modal"
@@ -60,20 +105,40 @@ const AddTransactionModal: React.FC<AddTransactionModalProps> = ({ triggerId, on
             <div className="ion-padding" style={{ background: 'var(--card-bg)', height: '100%', overflowY: 'auto', flex: 1, display: 'flex', flexDirection: 'column' }}>
                 <div style={{ width: '40px', height: '4px', background: 'var(--border-color)', borderRadius: '10px', margin: '10px auto 20px', flexShrink: 0 }}></div>
 
-                {step === 1 ? (
-                    <DescribeTransaction
-                        description={transaction.description || ''}
-                        setDescription={(val) => handleUpdate({ description: val })}
-                        onNext={() => setStep(2)}
-                    />
-                ) : (
-                    <EditTransaction
-                        transaction={transaction}
-                        onUpdate={handleUpdate}
-                        onSave={handleSave}
-                        onBack={() => setStep(1)}
-                    />
-                )}
+                {loading ?
+                    <div>
+                        <DotLottieReact
+                            src="/assets/animations/loading.lottie"
+                            autoplay
+                            loop
+                            style={{ width: '250px', height: '250px', marginLeft: "auto", marginRight: "auto" }}
+                        />
+                        <div style={{
+                            display: "flex",
+                            justifyContent: "center",
+                            fontSize: "20px",
+                            fontWeight: 600,
+                            color: "var(--text-color)",
+                            letterSpacing: "0.5px",
+                            fontFamily: "var(--font-family)",
+                            marginTop: "-20px"
+                        }}>Analyzing...</div>
+                    </div> :
+                    step === 1 ? (
+                        <DescribeTransaction
+                            description={transaction.description || ''}
+                            setDescription={(val) => handleUpdate({ description: val })}
+                            onNext={handleNext}
+                        />
+                    ) : (
+                        <EditTransaction
+                            transaction={transaction}
+                            onUpdate={handleUpdate}
+                            onSave={handleSave}
+                            onBack={() => setStep(1)}
+                        />
+                    )
+                }
             </div>
         </IonModal>
     );

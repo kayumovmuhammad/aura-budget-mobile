@@ -10,6 +10,7 @@ import AddTransactionModal from '../components/AddTransactionModal';
 import BudgetSelectionModal from '../components/BudgetSelectionModal';
 import { Transaction } from '../data/types';
 import useTransactionsState, { useFinances } from '../states/transactionsState';
+import NoScrollbarContainer from '../components/NoScrollbarContainer';
 
 const Home: React.FC = () => {
   const [isDarkMode, setIsDarkMode] = useState(false);
@@ -24,6 +25,7 @@ const Home: React.FC = () => {
     addTransaction,
     updateTransaction,
     deleteTransaction,
+    addBudget,
   } = useTransactionsState();
 
   const { income, waste, balance, incomeByCategory, wasteByCategory } = useFinances();
@@ -72,27 +74,29 @@ const Home: React.FC = () => {
         openBudgetModal={() => setShowBudgetModal(true)}
         selectedBudget={activeBudget}
       />
-      <IonContent fullscreen>
-        <BalanceStats
-          balance={balance}
-          incomeDelta={income}
-          expenseDelta={waste}
-        />
+      <IonContent fullscreen scrollY={false} forceOverscroll={false}>
+        <NoScrollbarContainer>
+          <BalanceStats
+            balance={balance}
+            incomeDelta={income}
+            expenseDelta={waste}
+          />
 
-        <SummaryCard
-          income={income}
-          waste={waste}
-          incomeByCategory={incomeByCategory}
-          wasteByCategory={wasteByCategory}
-        />
+          <SummaryCard
+            income={income}
+            waste={waste}
+            incomeByCategory={incomeByCategory}
+            wasteByCategory={wasteByCategory}
+          />
 
-        <TransactionList
-          transactions={currentTransactions}
-          onUpdate={handleUpdateTransaction}
-          onDelete={handleDeleteTransaction}
-        />
+          <TransactionList
+            transactions={currentTransactions}
+            onUpdate={handleUpdateTransaction}
+            onDelete={handleDeleteTransaction}
+          />
 
-        <div style={{ height: '100px' }}></div>
+          <div style={{ height: '100px' }}></div>
+        </NoScrollbarContainer>
       </IonContent>
 
       <IonFab vertical="bottom" horizontal="center" slot="fixed">
@@ -112,6 +116,7 @@ const Home: React.FC = () => {
         budgets={budgetNames}
         selectedBudget={activeBudget}
         onSelectBudget={setActiveBudget}
+        onAddBudget={addBudget}
       />
     </IonPage>
   );

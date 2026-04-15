@@ -1,9 +1,8 @@
 import { create } from 'zustand';
-import { persist } from 'zustand/middleware';
+import { createJSONStorage, persist } from 'zustand/middleware';
 import { Transaction, Budget, FinancialSummary } from '../data/types';
 import { calculateTotalsInRange } from '../utils/financeCalculations';
-
-// Re-export Transaction so existing imports from this file don't break
+import capacitorStorage from '../storage/capasitorStorage';
 export type { Transaction };
 
 interface TransactionsState {
@@ -14,6 +13,7 @@ interface TransactionsState {
     addTransaction: (transaction: Transaction) => void;
     deleteTransaction: (id: string) => void;
     updateTransaction: (id: string, transaction: Transaction) => void;
+    addBudget: (title: string) => void;
 }
 
 const useTransactionsState = create<TransactionsState>()(
@@ -26,6 +26,13 @@ const useTransactionsState = create<TransactionsState>()(
             ],
             activeBudget: 'Personal',
             setActiveBudget: (title) => set({ activeBudget: title }),
+            addBudget: (title) =>
+                set((state) => {
+                    const newBudget = { id: Date.now(), title };
+                    return {
+                        budget: [newBudget, ...state.budget],
+                    };
+                }),
             addTransaction: (transaction) =>
                 set((state) => {
                     const currentTxs = state.transactions[state.activeBudget] || [];
@@ -57,7 +64,10 @@ const useTransactionsState = create<TransactionsState>()(
                     };
                 }),
         }),
-        { name: 'transactions' }
+        {
+            name: 'transactions',
+            storage: createJSONStorage(() => capacitorStorage),
+        }
     )
 );
 

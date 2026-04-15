@@ -1,3 +1,5 @@
+import tailwindcss from '@tailwindcss/vite'
+
 /* For information on how to create your own theme, please refer to:
 http://ionicframework.com/docs/theming/ */
 
@@ -18,14 +20,22 @@ http://ionicframework.com/docs/theming/ */
     --border-color: #e0ddd5;
 
     /* Light theme chart: vivid modern palette — pops on cream/white */
-    --chart-color-1: #5b6cf5; /* Indigo */
-    --chart-color-2: #f0654a; /* Coral */
-    --chart-color-3: #00b09b; /* Teal */
-    --chart-color-4: #f5a623; /* Amber */
-    --chart-color-5: #9b59b6; /* Violet */
-    --chart-color-6: #2ecc71; /* Mint green */
-    --chart-color-7: #e91e8c; /* Hot pink */
-    --chart-color-8: #03a9f4; /* Sky blue */
+    --chart-color-1: #5b6cf5;
+    /* Indigo */
+    --chart-color-2: #f0654a;
+    /* Coral */
+    --chart-color-3: #00b09b;
+    /* Teal */
+    --chart-color-4: #f5a623;
+    /* Amber */
+    --chart-color-5: #9b59b6;
+    /* Violet */
+    --chart-color-6: #2ecc71;
+    /* Mint green */
+    --chart-color-7: #e91e8c;
+    /* Hot pink */
+    --chart-color-8: #03a9f4;
+    /* Sky blue */
 }
 
 /* DARK THEME CLASS */
@@ -46,22 +56,45 @@ html.ion-palette-dark {
     --chip-bg: #33312d;
     --border-color: #3d3b36;
     --ion-background-color: #1a1917;
-    --ion-item-background: #262522;
+    --ion-item-background: transparent;
 
     /* Dark theme chart: muted & deep so they glow on dark stone backgrounds */
-    --chart-color-1: #918b76; /* Stone primary */
-    --chart-color-2: #b87a62; /* Muted rust */
-    --chart-color-3: #687a6d; /* Muted sage */
-    --chart-color-4: #c4ad7a; /* Warm sand */
-    --chart-color-5: #7f736b; /* Warm taupe */
-    --chart-color-6: #a86b6b; /* Muted rose */
-    --chart-color-7: #5c6e7a; /* Slate blue */
-    --chart-color-8: #8a825e; /* Dark mustard */
+    --chart-color-1: #918b76;
+    /* Stone primary */
+    --chart-color-2: #b87a62;
+    /* Muted rust */
+    --chart-color-3: #687a6d;
+    /* Muted sage */
+    --chart-color-4: #c4ad7a;
+    /* Warm sand */
+    --chart-color-5: #7f736b;
+    /* Warm taupe */
+    --chart-color-6: #a86b6b;
+    /* Muted rose */
+    --chart-color-7: #5c6e7a;
+    /* Slate blue */
+    --chart-color-8: #8a825e;
+    /* Dark mustard */
+}
+
+body,
+html,
+ion-app,
+.ion-page,
+ion-content {
+    transition: background-color 0.3s ease;
+    overscroll-behavior-y: none !important;
+    overscroll-behavior: none !important;
+    --overscroll-behavior: none !important;
+}
+
+ion-content::part(scroll) {
+    overscroll-behavior-y: none !important;
+    overscroll-behavior: none !important;
 }
 
 body {
     background-color: var(--app-bg);
-    transition: background-color 0.3s ease;
 }
 
 ion-app {
@@ -169,6 +202,10 @@ ion-item.tx-item {
 }
 
 /* FAB */
+ion-fab[vertical="bottom"] {
+    margin-bottom: calc(env(safe-area-inset-bottom, 0px));
+}
+
 ion-fab-button {
     --background: var(--ion-color-primary);
     --box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
@@ -199,4 +236,9 @@ ion-modal.action-sheet-modal::part(content) {
     height: 56px;
     font-weight: 600;
     margin-top: 24px;
+}
+
+/* Toast Customization */
+ion-toast.white-text-toast {
+    --color: #ffffff;
 }

@@ -110,7 +110,7 @@ const EditTransaction: React.FC<EditTransactionProps> = ({
                 </IonSegmentButton>
             </IonSegment>
 
-            <IonItem mode="md" style={{ borderRadius: '12px', marginBottom: '16px' }}>
+            <IonItem style={{ borderRadius: '12px', marginBottom: '16px' }}>
                 <IonSelect label="Payment Mode" labelPlacement="floating" value={paymentType} onIonChange={e => {
                     onUpdate({ payment_type: e.detail.value as any });
                 }}>

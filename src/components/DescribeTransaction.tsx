@@ -26,6 +26,7 @@ const DescribeTransaction: React.FC<DescribeTransactionProps> = ({ description, 
 
             <IonItem mode="md" style={{ borderRadius: '12px', marginTop: '24px' }}>
                 <IonTextarea
+                    autoFocus
                     placeholder="E.g., Bought groceries for 50 bucks weekly"
                     autoGrow
                     value={description}

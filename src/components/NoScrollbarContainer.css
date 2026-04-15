@@ -1,0 +1,16 @@
+.no-scrollbar-container {
+  height: 100%;
+  overflow-y: auto;
+  /* Hide scrollbar for Firefox, IE and Edge */
+  -ms-overflow-style: none !important;
+  scrollbar-width: none !important;
+  overscroll-behavior: none !important;
+}
+
+/* Hide scrollbar for Chrome, Safari and Opera (WebKit) */
+.no-scrollbar-container::-webkit-scrollbar {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+  background: transparent;
+}

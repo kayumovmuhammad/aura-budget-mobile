@@ -76,7 +76,7 @@ const PieChart: React.FC<PieChartProps> = ({ data }) => {
                     <div key={i} style={{
                         display: 'flex', justifyContent: 'space-between', alignItems: 'center',
                         padding: '12px 16px', background: 'var(--chip-bg)', borderRadius: '16px',
-                        border: '1px solid var(--border-color)'
+                        border: '0px solid var(--border-color)'
                     }}>
                         <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
                             <div style={{ width: '14px', height: '14px', borderRadius: '4px', backgroundColor: slice.color }}></div>
