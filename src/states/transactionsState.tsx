@@ -6,14 +6,16 @@ import capacitorStorage from '../storage/capasitorStorage';
 export type { Transaction };
 
 interface TransactionsState {
-    transactions: Record<string, Transaction[]>;
+    transactions: Record<number, Transaction[]>;
     budget: Budget[];
-    activeBudget: string;
-    setActiveBudget: (title: string) => void;
+    activeBudget: number;
+    setActiveBudget: (id: number) => void;
     addTransaction: (transaction: Transaction) => void;
     deleteTransaction: (id: string) => void;
     updateTransaction: (id: string, transaction: Transaction) => void;
-    addBudget: (title: string) => void;
+    addBudget: (title: string) => number;
+    editBudget: (id: number, title: string) => void;
+    deleteBudget: (id: number) => void;
 }
 
 const useTransactionsState = create<TransactionsState>()(
@@ -24,14 +26,34 @@ const useTransactionsState = create<TransactionsState>()(
                 { id: 0, title: 'Personal' },
                 { id: 1, title: 'Vacation Fund' },
             ],
-            activeBudget: 'Personal',
-            setActiveBudget: (title) => set({ activeBudget: title }),
-            addBudget: (title) =>
+            activeBudget: 0,
+            setActiveBudget: (id) => set({ activeBudget: id }),
+            addBudget: (title) => {
+                const newId = Date.now();
+                set((state) => ({
+                    budget: [{ id: newId, title }, ...state.budget],
+                }));
+                return newId;
+            },
+            editBudget: (id, title) =>
+                set((state) => ({
+                    budget: state.budget.map((b) => (b.id === id ? { ...b, title } : b)),
+                })),
+            deleteBudget: (id) =>
                 set((state) => {
-                    const newBudget = { id: Date.now(), title };
-                    return {
-                        budget: [newBudget, ...state.budget],
-                    };
+                    const newBudgets = state.budget.filter((b) => b.id !== id);
+                    if (newBudgets.length === 0) return {}; // Prevent deleting the last budget
+
+                    const newState: Partial<TransactionsState> = { budget: newBudgets };
+                    if (state.activeBudget === id) {
+                        newState.activeBudget = newBudgets[0].id;
+                    }
+
+                    const newTransactions = { ...state.transactions };
+                    delete newTransactions[id];
+                    newState.transactions = newTransactions;
+
+                    return newState;
                 }),
             addTransaction: (transaction) =>
                 set((state) => {

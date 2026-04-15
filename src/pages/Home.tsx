@@ -26,12 +26,13 @@ const Home: React.FC = () => {
     updateTransaction,
     deleteTransaction,
     addBudget,
+    editBudget,
+    deleteBudget,
   } = useTransactionsState();
 
   const { income, waste, balance, incomeByCategory, wasteByCategory } = useFinances();
 
   const currentTransactions = transactions[activeBudget] || [];
-  const budgetNames = budget.map(b => b.title);
 
   // ── Theme ──────────────────────────────────────────────────
   useEffect(() => {
@@ -72,7 +73,7 @@ const Home: React.FC = () => {
         isDarkMode={isDarkMode}
         toggleTheme={toggleTheme}
         openBudgetModal={() => setShowBudgetModal(true)}
-        selectedBudget={activeBudget}
+        selectedBudget={budget.find(b => b.id === activeBudget)?.title || 'Unknown'}
       />
       <IonContent fullscreen scrollY={false} forceOverscroll={false}>
         <NoScrollbarContainer>
@@ -113,10 +114,12 @@ const Home: React.FC = () => {
       <BudgetSelectionModal
         isOpen={showBudgetModal}
         onDidDismiss={() => setShowBudgetModal(false)}
-        budgets={budgetNames}
+        budgets={budget}
         selectedBudget={activeBudget}
         onSelectBudget={setActiveBudget}
         onAddBudget={addBudget}
+        onEditBudget={editBudget}
+        onDeleteBudget={deleteBudget}
       />
     </IonPage>
   );
