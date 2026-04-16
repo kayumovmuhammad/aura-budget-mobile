@@ -36,6 +36,8 @@ http://ionicframework.com/docs/theming/ */
     /* Hot pink */
     --chart-color-8: #03a9f4;
     /* Sky blue */
+    
+    --segment-active-text: white;
 }
 
 /* DARK THEME CLASS */
@@ -75,6 +77,8 @@ html.ion-palette-dark {
     /* Slate blue */
     --chart-color-8: #8a825e;
     /* Dark mustard */
+
+    --segment-active-text: white;
 }
 
 body,
@@ -160,7 +164,15 @@ ion-segment.summary-segment {
 ion-segment-button.summary-segment-btn {
     --indicator-color: var(--ion-color-primary);
     --color: var(--text-sub);
-    --color-checked: #fff;
+    --color-checked: #ffffff;
+}
+
+ion-segment-button.summary-segment-btn.segment-button-checked {
+    --color: #ffffff !important;
+}
+
+ion-segment-button.summary-segment-btn.segment-button-checked ion-label {
+    color: var(--segment-active-text) !important;
 }
 
 /* Chart */

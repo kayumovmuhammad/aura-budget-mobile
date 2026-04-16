@@ -2,6 +2,9 @@ import { Redirect, Route } from 'react-router-dom';
 import { IonApp, IonRouterOutlet, setupIonicReact } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
 import Home from './pages/Home';
+import Settings from './pages/Settings';
+import useSettingsState from './states/settingsState';
+import { useEffect } from 'react';
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -35,8 +38,28 @@ import './theme/variables.css';
 
 setupIonicReact();
 
-const App: React.FC = () => (
-  <IonApp>
+const App: React.FC = () => {
+  const { theme } = useSettingsState();
+
+  useEffect(() => {
+    let dark = false;
+    if (theme === 'system') {
+      dark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    } else {
+      dark = theme === 'dark';
+    }
+
+    if (dark) {
+      document.body.classList.add('dark');
+      document.documentElement.classList.add('ion-palette-dark');
+    } else {
+      document.body.classList.remove('dark');
+      document.documentElement.classList.remove('ion-palette-dark');
+    }
+  }, [theme]);
+
+  return (
+    <IonApp>
     <IonReactRouter>
       <IonRouterOutlet>
         <Route path="/" exact={true}>
@@ -45,9 +68,13 @@ const App: React.FC = () => (
         <Route path="/home" exact={true}>
           <Home />
         </Route>
+        <Route path="/settings" exact={true}>
+          <Settings />
+        </Route>
       </IonRouterOutlet>
     </IonReactRouter>
   </IonApp>
-);
+  );
+};
 
 export default App;

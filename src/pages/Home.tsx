@@ -10,10 +10,10 @@ import AddTransactionModal from '../components/AddTransactionModal';
 import BudgetSelectionModal from '../components/BudgetSelectionModal';
 import { Transaction } from '../data/types';
 import useTransactionsState, { useFinances } from '../states/transactionsState';
+import useSettingsState from '../states/settingsState';
 import NoScrollbarContainer from '../components/NoScrollbarContainer';
 
 const Home: React.FC = () => {
-  const [isDarkMode, setIsDarkMode] = useState(false);
   const [showBudgetModal, setShowBudgetModal] = useState(false);
 
   // ── Store ──────────────────────────────────────────────────
@@ -35,22 +35,29 @@ const Home: React.FC = () => {
   const currentTransactions = transactions[activeBudget] || [];
 
   // ── Theme ──────────────────────────────────────────────────
+  const { theme, setTheme } = useSettingsState();
+  const [isDarkMode, setIsDarkMode] = useState(false);
+
   useEffect(() => {
-    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)');
-    if (prefersDark.matches) {
-      setIsDarkMode(true);
+    let dark = false;
+    if (theme === 'system') {
+      dark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    } else {
+      dark = theme === 'dark';
+    }
+
+    setIsDarkMode(dark);
+    if (dark) {
       document.body.classList.add('dark');
       document.documentElement.classList.add('ion-palette-dark');
     } else {
       document.body.classList.remove('dark');
       document.documentElement.classList.remove('ion-palette-dark');
     }
-  }, []);
+  }, [theme]);
 
   const toggleTheme = () => {
-    setIsDarkMode(prev => !prev);
-    document.body.classList.toggle('dark');
-    document.documentElement.classList.toggle('ion-palette-dark');
+    setTheme(isDarkMode ? 'light' : 'dark');
   };
 
   // ── Handlers ───────────────────────────────────────────────
@@ -70,8 +77,6 @@ const Home: React.FC = () => {
   return (
     <IonPage>
       <Header
-        isDarkMode={isDarkMode}
-        toggleTheme={toggleTheme}
         openBudgetModal={() => setShowBudgetModal(true)}
         selectedBudget={budget.find(b => b.id === activeBudget)?.title || 'Unknown'}
       />

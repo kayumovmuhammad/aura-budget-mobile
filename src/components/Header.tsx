@@ -3,13 +3,11 @@ import { IonHeader, IonToolbar, IonButtons, IonButton, IonIcon } from '@ionic/re
 import { chevronDownOutline, moonOutline, sunnyOutline, settingsOutline } from 'ionicons/icons';
 
 interface HeaderProps {
-  isDarkMode: boolean;
-  toggleTheme: () => void;
   openBudgetModal: () => void;
   selectedBudget: string;
 }
 
-const Header: React.FC<HeaderProps> = ({ isDarkMode, toggleTheme, openBudgetModal, selectedBudget }) => {
+const Header: React.FC<HeaderProps> = ({ openBudgetModal, selectedBudget }) => {
   return (
     <IonHeader className="ion-no-border">
       <IonToolbar style={{ paddingBottom: '10px' }}>
@@ -18,10 +16,7 @@ const Header: React.FC<HeaderProps> = ({ isDarkMode, toggleTheme, openBudgetModa
           <IonIcon icon={chevronDownOutline} style={{ marginLeft: '4px' }} />
         </div>
         <IonButtons slot="end">
-          <IonButton color="primary" onClick={toggleTheme}>
-            <IonIcon slot="icon-only" icon={isDarkMode ? sunnyOutline : moonOutline} />
-          </IonButton>
-          <IonButton color="primary">
+          <IonButton color="primary" routerLink="/settings">
             <IonIcon slot="icon-only" icon={settingsOutline} />
           </IonButton>
         </IonButtons>
