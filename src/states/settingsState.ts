@@ -9,6 +9,8 @@ interface SettingsState {
     setCurrency: (currency: string) => void;
     language: string;
     setLanguage: (language: string) => void;
+    userID: string;
+    setUserID: (id: string) => void;
 }
 
 const useSettingsState = create<SettingsState>()(
@@ -20,6 +22,8 @@ const useSettingsState = create<SettingsState>()(
             setCurrency: (currency) => set({ currency }),
             language: 'en',
             setLanguage: (language) => set({ language }),
+            userID: "",
+            setUserID: (id) => set({ userID: id }),
         }),
         {
             name: 'settings',

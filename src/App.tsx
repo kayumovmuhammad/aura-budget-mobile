@@ -3,6 +3,7 @@ import { IonApp, IonRouterOutlet, setupIonicReact } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
 import Home from './pages/Home';
 import Settings from './pages/Settings';
+import Welcome from './pages/Welcome';
 import useSettingsState from './states/settingsState';
 import { useEffect } from 'react';
 
@@ -39,7 +40,7 @@ import './theme/variables.css';
 setupIonicReact();
 
 const App: React.FC = () => {
-  const { theme, language } = useSettingsState();
+  const { theme, language, userID } = useSettingsState();
 
   useEffect(() => {
     let dark = false;
@@ -69,13 +70,16 @@ const App: React.FC = () => {
     <IonReactRouter>
       <IonRouterOutlet>
         <Route path="/" exact={true}>
-          <Redirect to="/home" />
+          {userID ? <Redirect to="/home" /> : <Redirect to="/welcome" />}
+        </Route>
+        <Route path="/welcome" exact={true}>
+          {userID ? <Redirect to="/home" /> : <Welcome />}
         </Route>
         <Route path="/home" exact={true}>
-          <Home />
+          {!userID ? <Redirect to="/welcome" /> : <Home />}
         </Route>
         <Route path="/settings" exact={true}>
-          <Settings />
+          {!userID ? <Redirect to="/welcome" /> : <Settings />}
         </Route>
       </IonRouterOutlet>
     </IonReactRouter>

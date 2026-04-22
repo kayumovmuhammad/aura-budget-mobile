@@ -27,6 +27,7 @@
     "@tailwindcss/vite": "^4.2.2",
     "@types/react-router": "^5.1.20",
     "@types/react-router-dom": "^5.3.3",
+    "framer-motion": "^12.38.0",
     "i18next": "^26.0.6",
     "ionicons": "^7.4.0",
     "react": "19.0.0",
@@ -35,6 +36,7 @@
     "react-router": "^5.3.4",
     "react-router-dom": "^5.3.4",
     "tailwindcss": "^4.2.2",
+    "uuid": "^14.0.0",
     "zustand": "^5.0.12"
   },
   "devDependencies": {
@@ -45,6 +47,7 @@
     "@testing-library/user-event": "^14.4.3",
     "@types/react": "19.0.10",
     "@types/react-dom": "19.0.4",
+    "@types/uuid": "^10.0.0",
     "@vitejs/plugin-legacy": "^8.0.1",
     "@vitejs/plugin-react": "^4.0.1",
     "cypress": "^13.5.0",

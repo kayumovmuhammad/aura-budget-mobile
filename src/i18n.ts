@@ -82,7 +82,17 @@ const en = {
     "New budget name": "New budget name",
     
     // Error messages
-    "Failed to annotate transaction": "Failed to annotate transaction"
+    "Failed to annotate transaction": "Failed to annotate transaction",
+    
+    // Welcome Onboarding
+    "Personal Budget": "Personal Budget",
+    "Welcome": "Welcome",
+    "Choose Language": "Choose Language",
+    "Choose Theme": "Choose Theme",
+    "Choose Currency": "Choose Currency",
+    "Continue": "Continue",
+    "Get Started": "Get Started",
+    "Personalize your experience": "Personalize your experience"
   }
 };
 
@@ -157,7 +167,16 @@ const ru = {
     "Select Budget": "Выбрать бюджет",
     "New budget name": "Новое название бюджета",
     
-    "Failed to annotate transaction": "Не удалось обработать транзакцию"
+    "Failed to annotate transaction": "Не удалось обработать транзакцию",
+    
+    "Personal Budget": "Личный бюджет",
+    "Welcome": "Добро пожаловать",
+    "Choose Language": "Выберите язык",
+    "Choose Theme": "Выберите тему",
+    "Choose Currency": "Выберите валюту",
+    "Continue": "Продолжить",
+    "Get Started": "Начать",
+    "Personalize your experience": "Настройте приложение под себя"
   }
 };
 
@@ -232,7 +251,16 @@ const es = {
     "Select Budget": "Seleccionar presupuesto",
     "New budget name": "Nuevo nombre del presupuesto",
     
-    "Failed to annotate transaction": "Error al procesar la transacción"
+    "Failed to annotate transaction": "Error al procesar la transacción",
+    
+    "Personal Budget": "Presupuesto personal",
+    "Welcome": "Bienvenido",
+    "Choose Language": "Elegir idioma",
+    "Choose Theme": "Elegir tema",
+    "Choose Currency": "Elegir moneda",
+    "Continue": "Continuar",
+    "Get Started": "Empezar",
+    "Personalize your experience": "Personaliza tu experiencia"
   }
 };
 

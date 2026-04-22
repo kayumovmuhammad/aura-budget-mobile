@@ -22,16 +22,14 @@ const useTransactionsState = create<TransactionsState>()(
     persist(
         (set) => ({
             transactions: {},
-            budget: [
-                { id: 0, title: 'Personal' },
-                { id: 1, title: 'Vacation Fund' },
-            ],
+            budget: [],
             activeBudget: 0,
             setActiveBudget: (id) => set({ activeBudget: id }),
             addBudget: (title) => {
                 const newId = Date.now();
                 set((state) => ({
                     budget: [{ id: newId, title }, ...state.budget],
+                    activeBudget: newId,
                 }));
                 return newId;
             },
