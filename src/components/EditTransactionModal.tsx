@@ -2,6 +2,7 @@ import React, { useRef, useEffect } from 'react';
 import { IonModal } from '@ionic/react';
 import { Transaction } from '../data/types';
 import EditTransaction from './EditTransaction';
+import { useTranslation } from 'react-i18next';
 
 interface EditTransactionModalProps {
     isOpen: boolean;
@@ -20,6 +21,7 @@ const EditTransactionModal: React.FC<EditTransactionModalProps> = ({
 }) => {
     const modal = useRef<HTMLIonModalElement>(null);
     const [editData, setEditData] = React.useState<Partial<Transaction>>({});
+    const { t } = useTranslation();
 
     useEffect(() => {
         if (transaction) setEditData(transaction);
@@ -69,7 +71,7 @@ const EditTransactionModal: React.FC<EditTransactionModalProps> = ({
                         onUpdate={handleUpdate}
                         onSave={handleSave}
                         onDelete={handleDelete}
-                        title="Edit Transaction"
+                        title={t("Edit Transaction")}
                     />
                 )}
             </div>

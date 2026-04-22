@@ -3,6 +3,8 @@ import { IonList, IonItemSliding, IonItem, IonLabel, IonIcon, IonButton } from '
 import { flashOutline, cashOutline, calendarOutline, syncOutline, todayOutline } from 'ionicons/icons';
 import { Transaction } from '../data/types';
 import EditTransactionModal from './EditTransactionModal';
+import { formatCurrency } from '../utils/formatCurrency';
+import { useTranslation } from 'react-i18next';
 
 const getPaymentIcon = (paymentType: string) => {
     switch (paymentType) {
@@ -24,6 +26,7 @@ interface TransactionListProps {
 const TransactionList: React.FC<TransactionListProps> = ({ transactions, onUpdate, onDelete }) => {
     const [selectedTransaction, setSelectedTransaction] = useState<Transaction | null>(null);
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+    const { t } = useTranslation();
 
     const handleTxClick = (tx: Transaction) => {
         setSelectedTransaction(tx);
@@ -34,10 +37,10 @@ const TransactionList: React.FC<TransactionListProps> = ({ transactions, onUpdat
         <>
             <div style={{ display: 'flex', justifyContent: 'space-between', padding: '0 24px', alignItems: 'center' }}>
                 <h2 style={{ fontWeight: 700, fontSize: '1.1rem', color: 'var(--text-main)' }}>
-                    Transactions
+                    {t('Transactions')}
                 </h2>
                 <IonButton fill="clear" color="primary" size="small">
-                    See All
+                    {t('See All')}
                 </IonButton>
             </div>
 
@@ -53,7 +56,7 @@ const TransactionList: React.FC<TransactionListProps> = ({ transactions, onUpdat
                                 <p style={{ color: 'var(--text-sub)' }}>{tx.day}</p>
                             </IonLabel>
                             <div slot="end" className={tx.type === 'waste' ? 'amt-expense' : 'amt-income'}>
-                                {tx.type === 'waste' ? '-' : '+'}${tx.money_amount.toFixed(2)}
+                                {tx.type === 'waste' ? '-' : '+'}{formatCurrency(tx.money_amount).replace('-', '')}
                             </div>
                         </IonItem>
                     </IonItemSliding>

@@ -1,4 +1,6 @@
 import React from 'react';
+import { formatCurrency } from '../utils/formatCurrency';
+import { useTranslation } from 'react-i18next';
 
 interface PieChartProps {
     data: Record<string, number>;
@@ -18,6 +20,7 @@ const colors = [
 
 const PieChart: React.FC<PieChartProps> = ({ data }) => {
     const total = Object.values(data).reduce((acc, val) => acc + (Number(val) || 0), 0);
+    const { t } = useTranslation();
 
     if (total === 0 || Object.keys(data).length === 0) {
         return (
@@ -25,7 +28,7 @@ const PieChart: React.FC<PieChartProps> = ({ data }) => {
                 <div style={{
                     width: '160px', height: '160px', borderRadius: '50%', background: 'transparent', border: '12px solid var(--border-color)', margin: '0 auto 15px'
                 }}></div>
-                <div style={{ fontSize: '0.9rem', color: 'var(--text-sub)' }}>No data to show</div>
+                <div style={{ fontSize: '0.9rem', color: 'var(--text-sub)' }}>{t('No data to show')}</div>
             </div>
         );
     }
@@ -65,8 +68,6 @@ const PieChart: React.FC<PieChartProps> = ({ data }) => {
                     display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
                     boxShadow: 'inset 0 4px 8px rgba(0,0,0,0.05)'
                 }}>
-                    <span style={{ fontSize: '0.75rem', fontWeight: 600, color: 'var(--text-sub)', letterSpacing: '1px' }}>TOTAL</span>
-                    <span style={{ fontSize: '1.1rem', fontWeight: 700, color: 'var(--text-main)' }}>${total.toFixed(0)}</span>
                 </div>
             </div>
 
@@ -83,7 +84,7 @@ const PieChart: React.FC<PieChartProps> = ({ data }) => {
                             <span style={{ color: 'var(--text-main)', fontWeight: 600, fontSize: '0.95rem' }}>{slice.category}</span>
                         </div>
                         <div style={{ display: 'flex', gap: '15px', alignItems: 'center' }}>
-                            <span style={{ fontWeight: 700, color: 'var(--text-main)', fontSize: '0.95rem' }}>${slice.value.toFixed(2)}</span>
+                            <span style={{ fontWeight: 700, color: 'var(--text-main)', fontSize: '0.95rem' }}>{formatCurrency(slice.value)}</span>
                             <span style={{
                                 color: 'var(--text-sub)',
                                 background: 'rgba(0,0,0,0.1)',

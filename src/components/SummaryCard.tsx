@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { IonCard, IonSegment, IonSegmentButton, IonLabel } from '@ionic/react';
 
 import PieChart from './PieChart';
+import { formatCurrency } from '../utils/formatCurrency';
+import { useTranslation } from 'react-i18next';
 
 interface SummaryCardProps {
     income: number;
@@ -12,6 +14,7 @@ interface SummaryCardProps {
 
 const SummaryCard: React.FC<SummaryCardProps> = ({ income, waste, incomeByCategory, wasteByCategory }) => {
     const [segment, setSegment] = useState<'income' | 'wastes'>('wastes');
+    const { t } = useTranslation();
 
     return (
         <IonCard className="ion-padding summary-card">
@@ -22,20 +25,20 @@ const SummaryCard: React.FC<SummaryCardProps> = ({ income, waste, incomeByCatego
                 onIonChange={(e) => setSegment(e.detail.value as 'income' | 'wastes')}
             >
                 <IonSegmentButton value="income" className="summary-segment-btn">
-                    <IonLabel>Income</IonLabel>
+                    <IonLabel>{t('Income')}</IonLabel>
                 </IonSegmentButton>
                 <IonSegmentButton value="wastes" className="summary-segment-btn">
-                    <IonLabel>Wastes</IonLabel>
+                    <IonLabel>{t('Wastes')}</IonLabel>
                 </IonSegmentButton>
             </IonSegment>
 
             <div className="chart-placeholder" style={{ padding: '20px 0 10px' }}>
                 <div style={{ textAlign: 'center', marginBottom: '15px' }}>
                     <div style={{ fontSize: '0.7rem', color: 'var(--text-sub)' }}>
-                        ALL-TIME
+                        {t('ALL-TIME')}
                     </div>
                     <div style={{ fontWeight: 700, color: 'var(--text-main)', fontSize: '1.2rem' }}>
-                        ${segment === 'income' ? income.toFixed(2) : waste.toFixed(2)}
+                        {formatCurrency(segment === 'income' ? income : waste)}
                     </div>
                 </div>
                 

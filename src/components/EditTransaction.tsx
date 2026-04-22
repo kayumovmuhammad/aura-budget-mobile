@@ -13,6 +13,7 @@ import {
 import { arrowBackOutline, trashOutline, saveOutline } from 'ionicons/icons';
 import confirmData from '../data/confirmData';
 import { Transaction } from '../states/transactionsState';
+import { useTranslation } from 'react-i18next';
 
 interface EditTransactionProps {
     transaction: Partial<Transaction>;
@@ -32,6 +33,7 @@ const EditTransaction: React.FC<EditTransactionProps> = ({
     title = "Details"
 }) => {
     const paymentType = transaction.payment_type || 'once';
+    const { t } = useTranslation();
 
     const renderDynamicInputs = () => {
         const fields = confirmData[paymentType as keyof typeof confirmData];
@@ -41,29 +43,33 @@ const EditTransaction: React.FC<EditTransactionProps> = ({
             const value = (transaction as any)[field.name] || '';
             const handleChange = (e: any) => onUpdate({ [field.name]: e.detail.value! });
 
-            const labelText = field.name.charAt(0).toUpperCase() + field.name.slice(1).replace('_', ' ');
+            const labelText = field.name
+                .split('_')
+                .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+                .join(' ');
+            const translatedLabel = t(labelText);
 
             if (field.inputType === "input" || field.inputType === "input:number") {
                 const inputType = field.inputType === "input:number" ? "number" : "text";
                 return (
                     <IonItem key={idx} mode="md" style={{ borderRadius: '12px', marginTop: '12px' }}>
-                        <IonInput type={inputType} label={labelText} labelPlacement="floating" value={value} onIonInput={handleChange} />
+                        <IonInput type={inputType} label={translatedLabel} labelPlacement="floating" value={value} onIonInput={handleChange} />
                     </IonItem>
                 );
             }
             if (field.inputType === "input:date") {
                 return (
                     <IonItem key={idx} mode="md" style={{ borderRadius: '12px', marginTop: '12px' }}>
-                        <IonInput type="date" label={labelText} labelPlacement="stacked" value={value} onIonInput={handleChange} />
+                        <IonInput type="date" label={translatedLabel} labelPlacement="stacked" value={value} onIonInput={handleChange} />
                     </IonItem>
                 );
             }
             if (field.inputType === "input:weekday") {
                 return (
                     <IonItem key={idx} mode="md" style={{ borderRadius: '12px', marginTop: '12px' }}>
-                        <IonSelect label={labelText} labelPlacement="floating" value={value} onIonChange={handleChange}>
+                        <IonSelect label={translatedLabel} labelPlacement="floating" value={value} onIonChange={handleChange}>
                             {['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'].map(d => (
-                                <IonSelectOption key={d} value={d}>{d}</IonSelectOption>
+                                <IonSelectOption key={d} value={d}>{t(d)}</IonSelectOption>
                             ))}
                         </IonSelect>
                     </IonItem>
@@ -72,14 +78,14 @@ const EditTransaction: React.FC<EditTransactionProps> = ({
             if (field.inputType === "input:day_of_month") {
                 return (
                     <IonItem key={idx} mode="md" style={{ borderRadius: '12px', marginTop: '12px' }}>
-                        <IonInput type="number" min="1" max="31" label={`${labelText} (1-31)`} labelPlacement="floating" value={value} onIonInput={handleChange} />
+                        <IonInput type="number" min="1" max="31" label={`${translatedLabel} (1-31)`} labelPlacement="floating" value={value} onIonInput={handleChange} />
                     </IonItem>
                 );
             }
             if (field.inputType === "input:day_of_year") {
                 return (
                     <IonItem key={idx} mode="md" style={{ borderRadius: '12px', marginTop: '12px' }}>
-                        <IonInput type="text" placeholder="MM-DD" label={labelText} labelPlacement="floating" value={value} onIonInput={handleChange} />
+                        <IonInput type="text" placeholder="MM-DD" label={translatedLabel} labelPlacement="floating" value={value} onIonInput={handleChange} />
                     </IonItem>
                 );
             }
@@ -103,22 +109,22 @@ const EditTransaction: React.FC<EditTransactionProps> = ({
 
             <IonSegment value={transaction.type || 'waste'} onIonChange={e => onUpdate({ type: e.detail.value as any })} mode="ios" style={{ marginBottom: '16px' }}>
                 <IonSegmentButton value="waste">
-                    <IonLabel>Waste</IonLabel>
+                    <IonLabel>{t('Waste')}</IonLabel>
                 </IonSegmentButton>
                 <IonSegmentButton value="income">
-                    <IonLabel>Income</IonLabel>
+                    <IonLabel>{t('Income')}</IonLabel>
                 </IonSegmentButton>
             </IonSegment>
 
             <IonItem style={{ borderRadius: '12px', marginBottom: '16px' }}>
-                <IonSelect label="Payment Mode" labelPlacement="floating" value={paymentType} onIonChange={e => {
+                <IonSelect label={t("Payment Mode")} labelPlacement="floating" value={paymentType} onIonChange={e => {
                     onUpdate({ payment_type: e.detail.value as any });
                 }}>
-                    <IonSelectOption value="once">Once</IonSelectOption>
-                    <IonSelectOption value="daily">Daily</IonSelectOption>
-                    <IonSelectOption value="weekly">Weekly</IonSelectOption>
-                    <IonSelectOption value="monthly">Monthly</IonSelectOption>
-                    <IonSelectOption value="annual">Annual</IonSelectOption>
+                    <IonSelectOption value="once">{t('Once')}</IonSelectOption>
+                    <IonSelectOption value="daily">{t('Daily')}</IonSelectOption>
+                    <IonSelectOption value="weekly">{t('Weekly')}</IonSelectOption>
+                    <IonSelectOption value="monthly">{t('Monthly')}</IonSelectOption>
+                    <IonSelectOption value="annual">{t('Annual')}</IonSelectOption>
                 </IonSelect>
             </IonItem>
 
@@ -128,12 +134,12 @@ const EditTransaction: React.FC<EditTransactionProps> = ({
                 {onDelete && (
                     <IonButton expand="block" color="danger" fill="outline" style={{ flex: 1, borderRadius: '12px' }} onClick={onDelete}>
                         <IonIcon slot="start" icon={trashOutline} />
-                        Delete
+                        {t('Delete')}
                     </IonButton>
                 )}
                 <IonButton expand="block" color="primary" style={{ flex: 1, borderRadius: '12px', '--border-radius': '12px' }} onClick={onSave}>
                     <IonIcon slot="start" icon={saveOutline} />
-                    Save
+                    {t('Save')}
                 </IonButton>
             </div>
         </>

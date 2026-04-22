@@ -39,7 +39,7 @@ import './theme/variables.css';
 setupIonicReact();
 
 const App: React.FC = () => {
-  const { theme } = useSettingsState();
+  const { theme, language } = useSettingsState();
 
   useEffect(() => {
     let dark = false;
@@ -57,6 +57,12 @@ const App: React.FC = () => {
       document.documentElement.classList.remove('ion-palette-dark');
     }
   }, [theme]);
+
+  useEffect(() => {
+    import('./i18n').then(({ default: i18n }) => {
+      i18n.changeLanguage(language || 'en');
+    });
+  }, [language]);
 
   return (
     <IonApp>

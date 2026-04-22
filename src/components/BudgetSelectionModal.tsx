@@ -6,6 +6,7 @@ import {
 import { checkmarkCircle, addOutline, pencilOutline, removeCircleOutline, trash } from 'ionicons/icons';
 
 import { Budget } from '../data/types';
+import { useTranslation } from 'react-i18next';
 
 interface BudgetSelectionModalProps {
     isOpen: boolean;
@@ -28,6 +29,7 @@ const BudgetSelectionModal: React.FC<BudgetSelectionModalProps> = ({
     onEditBudget,
     onDeleteBudget,
 }) => {
+    const { t } = useTranslation();
     const [isManageMode, setIsManageMode] = useState(false);
     const [isAdding, setIsAdding] = useState(false);
     const [newTitle, setNewTitle] = useState('');
@@ -97,19 +99,19 @@ const BudgetSelectionModal: React.FC<BudgetSelectionModalProps> = ({
         e.stopPropagation();
         if (budgets.length <= 1) {
             presentAlert({
-                header: 'Cannot Delete',
-                message: 'You must have at least one budget.',
+                header: t('Cannot Delete'),
+                message: t('You must have at least one budget.'),
                 buttons: ['OK'],
             });
             return;
         }
         presentAlert({
-            header: 'Delete Budget?',
-            message: `Are you sure you want to delete "${b.title}" and all its associated transactions?`,
+            header: t('Delete Budget?'),
+            message: t('Are you sure you want to delete ') + `"${b.title}"` + t(' and all its associated transactions?'),
             buttons: [
-                { text: 'Cancel', role: 'cancel' },
+                { text: t('Cancel'), role: 'cancel' },
                 {
-                    text: 'Delete',
+                    text: t('Delete'),
                     role: 'destructive',
                     handler: () => {
                         onDeleteBudget(b.id);
@@ -136,7 +138,7 @@ const BudgetSelectionModal: React.FC<BudgetSelectionModalProps> = ({
                 <div style={{ width: '40px', height: '4px', background: 'var(--border-color)', borderRadius: '10px', margin: '0 auto 16px', flexShrink: 0 }}></div>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
                     <h3 style={{ fontWeight: 700, color: 'var(--text-main)', margin: 0 }}>
-                        Select Budget
+                        {t('Select Budget')}
                     </h3>
                     <div style={{ display: 'flex', alignItems: 'center' }}>
                         <IonButton
@@ -148,7 +150,7 @@ const BudgetSelectionModal: React.FC<BudgetSelectionModalProps> = ({
                             }}
                             style={{ margin: 0, textTransform: 'none', fontWeight: 600 }}
                         >
-                            {isManageMode ? 'Done' : 'Edit'}
+                            {isManageMode ? t('Done') : t('Edit')}
                         </IonButton>
                         {!isManageMode && (
                             <IonButton fill="clear" onClick={() => setIsAdding(true)} style={{ margin: 0, '--padding-end': 0 }}>
@@ -164,7 +166,7 @@ const BudgetSelectionModal: React.FC<BudgetSelectionModalProps> = ({
                             <IonInput
                                 ref={inputRef}
                                 value={newTitle}
-                                placeholder="New budget name"
+                                placeholder={t("New budget name")}
                                 onIonInput={(e) => setNewTitle(e.detail.value!)}
                                 onKeyUp={(e) => {
                                     if (e.key === 'Enter') handleSaveNewBudget();

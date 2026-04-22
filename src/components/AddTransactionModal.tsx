@@ -5,6 +5,7 @@ import DescribeTransaction from './DescribeTransaction';
 import EditTransaction from './EditTransaction';
 import fetcher from '../utils/fetcher';
 import { DotLottieReact } from '@lottiefiles/dotlottie-react';
+import { useTranslation } from 'react-i18next';
 
 interface AddTransactionModalProps {
     triggerId: string;
@@ -13,6 +14,7 @@ interface AddTransactionModalProps {
 
 const AddTransactionModal: React.FC<AddTransactionModalProps> = ({ triggerId, onSave }) => {
     const modal = useRef<HTMLIonModalElement>(null);
+    const { t } = useTranslation();
     const [step, setStep] = useState<1 | 2>(1);
     const [transaction, setTransaction] = useState<Partial<Transaction>>({
         description: '',
@@ -62,7 +64,7 @@ const AddTransactionModal: React.FC<AddTransactionModalProps> = ({ triggerId, on
         const description = transaction.description;
 
         if (!description || description.trim() === '') {
-            showError("Please enter a description before continuing.");
+            showError(t("Please enter a description before continuing."));
             return;
         }
 
@@ -72,7 +74,7 @@ const AddTransactionModal: React.FC<AddTransactionModalProps> = ({ triggerId, on
             body: JSON.stringify({ user_description: description }),
         }).then(res => {
             if (!res.ok) {
-                throw new Error('Failed to annotate transaction');
+                throw new Error(t('Failed to annotate transaction'));
             }
             return res.json()
         }).then(data => {
@@ -122,7 +124,7 @@ const AddTransactionModal: React.FC<AddTransactionModalProps> = ({ triggerId, on
                             letterSpacing: "0.5px",
                             fontFamily: "var(--font-family)",
                             marginTop: "-20px"
-                        }}>Analyzing...</div>
+                        }}>{t('Analyzing...')}</div>
                     </div> :
                     step === 1 ? (
                         <DescribeTransaction
