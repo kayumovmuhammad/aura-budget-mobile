@@ -14,6 +14,7 @@ import { arrowBackOutline, trashOutline, saveOutline } from 'ionicons/icons';
 import confirmData from '../data/confirmData';
 import { Transaction } from '../states/transactionsState';
 import { useTranslation } from 'react-i18next';
+import { t } from 'i18next';
 
 interface EditTransactionProps {
     transaction: Partial<Transaction>;
@@ -24,13 +25,13 @@ interface EditTransactionProps {
     title?: string;
 }
 
-const EditTransaction: React.FC<EditTransactionProps> = ({ 
-    transaction, 
-    onUpdate, 
-    onSave, 
-    onBack, 
+const EditTransaction: React.FC<EditTransactionProps> = ({
+    transaction,
+    onUpdate,
+    onSave,
+    onBack,
     onDelete,
-    title = "Details"
+    title = t("Details")
 }) => {
     const paymentType = transaction.payment_type || 'once';
     const { t } = useTranslation();
@@ -78,7 +79,7 @@ const EditTransaction: React.FC<EditTransactionProps> = ({
             if (field.inputType === "input:day_of_month") {
                 return (
                     <IonItem key={idx} mode="md" style={{ borderRadius: '12px', marginTop: '12px' }}>
-                        <IonInput type="number" min="1" max="31" label={`${translatedLabel} (1-31)`} labelPlacement="floating" value={value} onIonInput={handleChange} />
+                        <IonInput type="number" min="1" max="31" label={t("Day of Month (1-31)")} labelPlacement="floating" value={value} onIonInput={handleChange} />
                     </IonItem>
                 );
             }

@@ -12,6 +12,7 @@ import { Transaction } from '../data/types';
 import useTransactionsState, { useFinances } from '../states/transactionsState';
 import useSettingsState from '../states/settingsState';
 import NoScrollbarContainer from '../components/NoScrollbarContainer';
+import { useTranslation } from 'react-i18next';
 
 const Home: React.FC = () => {
   const [showBudgetModal, setShowBudgetModal] = useState(false);
@@ -33,6 +34,8 @@ const Home: React.FC = () => {
   const { income, waste, balance, incomeByCategory, wasteByCategory } = useFinances();
 
   const currentTransactions = transactions[activeBudget] || [];
+  const { t } = useTranslation();
+
 
   // ── Theme ──────────────────────────────────────────────────
   const { theme, setTheme } = useSettingsState();
@@ -78,7 +81,7 @@ const Home: React.FC = () => {
     <IonPage>
       <Header
         openBudgetModal={() => setShowBudgetModal(true)}
-        selectedBudget={budget.find(b => b.id === activeBudget)?.title || 'Unknown'}
+        selectedBudget={budget.find(b => b.id === activeBudget)?.title || t('Unknown')}
       />
       <IonContent fullscreen scrollY={false} forceOverscroll={false}>
         <NoScrollbarContainer>

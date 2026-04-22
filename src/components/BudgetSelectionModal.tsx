@@ -101,7 +101,7 @@ const BudgetSelectionModal: React.FC<BudgetSelectionModalProps> = ({
             presentAlert({
                 header: t('Cannot Delete'),
                 message: t('You must have at least one budget.'),
-                buttons: ['OK'],
+                buttons: [t('OK')],
             });
             return;
         }
