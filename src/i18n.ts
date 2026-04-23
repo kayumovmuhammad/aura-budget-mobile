@@ -13,12 +13,12 @@ const en = {
     "OK": "OK",
     "Unknown": "Unknown",
     "Next": "Next",
-    
+
     // Home
     "Summary": "Summary",
     "Home": "Home",
     "Orders": "Orders",
-    
+
     // Settings
     "Settings": "Settings",
     "Appearance": "Appearance",
@@ -27,21 +27,21 @@ const en = {
     "Light": "Light",
     "Auto": "Auto",
     "Dark": "Dark",
-    
+
     // SummaryCard / PieChart
     "Income": "Income",
     "Wastes": "Wastes",
     "ALL-TIME": "ALL-TIME",
     "TOTAL": "TOTAL",
     "No data to show": "No data to show",
-    
+
     // BalanceStats
     "Current Balance": "Current Balance",
-    
+
     // TransactionList
     "Transactions": "Transactions",
     "See All": "See All",
-    
+
     // Add / Edit / Describe Transaction
     "Analyzing...": "Analyzing...",
     "What did you spend on?": "What did you spend on?",
@@ -68,9 +68,10 @@ const en = {
     "Speech recognition error.": "Speech recognition error.",
     "Speech recognition is not supported on the web browser.": "Speech recognition is not supported on the web browser.",
     "Listening...": "Listening...",
-    
+
     // Days
     "Day Of Month": "Day of Month",
+    "day of month": "day of month",
     "Day of Month (1-31)": "Day of Month (1-31)",
     "Day Of Year": "Day of Year",
     "Monday": "Monday",
@@ -80,7 +81,7 @@ const en = {
     "Friday": "Friday",
     "Saturday": "Saturday",
     "Sunday": "Sunday",
-    
+
     // Budget Selection
     "Cannot Delete": "Cannot Delete",
     "You must have at least one budget.": "You must have at least one budget.",
@@ -90,10 +91,10 @@ const en = {
     " and all its associated transactions?": " and all its associated transactions?",
     "Select Budget": "Select Budget",
     "New budget name": "New budget name",
-    
+
     // Error messages
     "Failed to annotate transaction": "Failed to annotate transaction",
-    
+
     // Welcome Onboarding
     "Personal Budget": "Personal Budget",
     "Welcome": "Welcome",
@@ -117,11 +118,11 @@ const ru = {
     "OK": "ОК",
     "Unknown": "Неизвестно",
     "Next": "Далее",
-    
+
     "Summary": "Сводка",
     "Home": "Главная",
     "Orders": "Заказы",
-    
+
     "Settings": "Настройки",
     "Appearance": "Оформление",
     "Currency": "Валюта",
@@ -129,18 +130,18 @@ const ru = {
     "Light": "Светлая",
     "Auto": "Авто",
     "Dark": "Тёмная",
-    
+
     "Income": "Доходы",
     "Wastes": "Расходы",
     "ALL-TIME": "ЗА ВСЁ ВРЕМЯ",
     "TOTAL": "ВСЕГО",
     "No data to show": "Нет данных",
-    
+
     "Current Balance": "Текущий баланс",
-    
+
     "Transactions": "Транзакции",
     "See All": "Все",
-    
+
     "Analyzing...": "Анализ...",
     "What did you spend on?": "На что вы потратили?",
     "E.g., Bought groceries for $50 at Walmart today": "Например: Купил продукты на 50 долларов сегодня",
@@ -166,8 +167,9 @@ const ru = {
     "Speech recognition error.": "Ошибка распознавания речи.",
     "Speech recognition is not supported on the web browser.": "Распознавание речи не поддерживается в веб-браузере.",
     "Listening...": "Слушаю...",
-    
+
     "Day Of Month": "День месяца",
+    "day of month": "день месяца",
     "Day of Month (1-31)": "День месяца (1-31)",
     "Day Of Year": "День года",
     "Monday": "Понедельник",
@@ -177,7 +179,7 @@ const ru = {
     "Friday": "Пятница",
     "Saturday": "Суббота",
     "Sunday": "Воскресенье",
-    
+
     "Cannot Delete": "Невозможно удалить",
     "You must have at least one budget.": "У вас должен быть хотя бы один бюджет.",
     "Delete Budget?": "Удалить бюджет?",
@@ -186,9 +188,9 @@ const ru = {
     " and all its associated transactions?": " и все связанные с ним транзакции?",
     "Select Budget": "Выбрать бюджет",
     "New budget name": "Новое название бюджета",
-    
+
     "Failed to annotate transaction": "Не удалось обработать транзакцию",
-    
+
     "Personal Budget": "Личный бюджет",
     "Welcome": "Добро пожаловать",
     "Choose Language": "Выберите язык",
@@ -211,11 +213,11 @@ const es = {
     "OK": "Aceptar",
     "Unknown": "Desconocido",
     "Next": "Siguiente",
-    
+
     "Summary": "Resumen",
     "Home": "Inicio",
     "Orders": "Pedidos",
-    
+
     "Settings": "Ajustes",
     "Appearance": "Apariencia",
     "Currency": "Moneda",
@@ -223,18 +225,18 @@ const es = {
     "Light": "Claro",
     "Auto": "Automático",
     "Dark": "Oscuro",
-    
+
     "Income": "Ingresos",
     "Wastes": "Gastos",
     "ALL-TIME": "TODO EL TIEMPO",
     "TOTAL": "TOTAL",
     "No data to show": "No hay datos",
-    
+
     "Current Balance": "Saldo Actual",
-    
+
     "Transactions": "Transacciones",
     "See All": "Ver Todo",
-    
+
     "Analyzing...": "Analizando...",
     "What did you spend on?": "¿En qué gastaste?",
     "E.g., Bought groceries for $50 at Walmart today": "Ej., Compré alimentos por $50 hoy",
@@ -260,8 +262,9 @@ const es = {
     "Speech recognition error.": "Error de reconocimiento de voz.",
     "Speech recognition is not supported on the web browser.": "El reconocimiento de voz no es compatible con el navegador web.",
     "Listening...": "Escuchando...",
-    
+
     "Day Of Month": "Día del mes",
+    "day of month": "Día del mes",
     "Day of Month (1-31)": "Día del mes (1-31)",
     "Day Of Year": "Día del año",
     "Monday": "Lunes",
@@ -271,7 +274,7 @@ const es = {
     "Friday": "Viernes",
     "Saturday": "Sábado",
     "Sunday": "Domingo",
-    
+
     "Cannot Delete": "No se puede eliminar",
     "You must have at least one budget.": "Debes tener al menos un presupuesto.",
     "Delete Budget?": "¿Eliminar presupuesto?",
@@ -280,9 +283,9 @@ const es = {
     " and all its associated transactions?": " y todas sus transacciones asociadas?",
     "Select Budget": "Seleccionar presupuesto",
     "New budget name": "Nuevo nombre del presupuesto",
-    
+
     "Failed to annotate transaction": "Error al procesar la transacción",
-    
+
     "Personal Budget": "Presupuesto personal",
     "Welcome": "Bienvenido",
     "Choose Language": "Elegir idioma",
